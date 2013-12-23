@@ -14,7 +14,7 @@ Usage:
 
     `catalina stop`
 
-3. Delete your existing brewed tomcat
+3. Delete your existing brewed tomcat. (Skip this step if brewed tomcat isn't installed)
 
     `brew rm tomcat`
 
