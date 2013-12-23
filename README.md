@@ -45,4 +45,4 @@ That's it! To see all available options:
 License:
 -
 
-Code licensed under [https://github.com/asaph/homebrew-tomcat/blob/master/LICENSE](BSD 2 Clause (NetBSD) license) (same as [https://github.com/Homebrew/homebrew](Homebrew)).
+Code licensed under [BSD 2 Clause (NetBSD) license](https://github.com/asaph/homebrew-tomcat/blob/master/LICENSE) (same as [Homebrew](https://github.com/Homebrew/homebrew)).
