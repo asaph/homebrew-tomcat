@@ -18,9 +18,9 @@ Usage:
 
     `brew tap asaph/tomcat`
 
-You'll see this warning which is safe to ignore. It just means you'll have to qualify the tomcat formula name when referencing it
+    You'll see this warning which is safe to ignore. It just means you'll have to qualify the tomcat formula name when referencing it
 
-    Warning: Could not tap asaph/tomcat/tomcat over Homebrew/homebrew/tomcat
+    `Warning: Could not tap asaph/tomcat/tomcat over Homebrew/homebrew/tomcat`
 
 5. Install tomcat with APR, SSL and gzip compression
 
