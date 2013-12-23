@@ -4,6 +4,7 @@ homebrew-tomcat
 Homebrew tap for Apache Tomcat supporting advanced configuration including SSL, APR, gzip and more
 
 Usage:
+-
 
 1. Backup any existing configuration or webapps in your existing brewed tomcat as these will be deleted shortly. (Skip this step if brewed tomcat isn't installed)
 2. Shutdown your existing brewed tomcat. (Skip this step if brewed tomcat isn't running) 
