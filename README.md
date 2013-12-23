@@ -41,3 +41,8 @@ Usage:
 That's it! To see all available options:
 
     brew options asaph/tomcat/tomcat
+
+License:
+-
+
+Code licensed under [https://github.com/asaph/homebrew-tomcat/blob/master/LICENSE](BSD 2 Clause (NetBSD) license) (same as [https://github.com/Homebrew/homebrew](Homebrew)).
