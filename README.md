@@ -30,9 +30,9 @@ You'll see this warning which is safe to ignore. It just means you'll have to qu
 
     `catalina start`
 
-- To validate tomcat is working, point your browser to (http://localhost:8080/)[http://localhost:8080/].
+- To validate tomcat is working, point your browser to [http://localhost:8080/](http://localhost:8080/).
 
-- To validate https is working, point your browser to (https://localhost:8443/)[https://localhost:8443/].
+- To validate https is working, point your browser to [https://localhost:8443/](https://localhost:8443/).
 
 That's it! To see all available options:
 
