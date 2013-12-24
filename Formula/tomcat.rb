@@ -9,6 +9,7 @@ class Tomcat < Formula
   option "with-apr", "Use Apache Portable Runtime"
   option "with-compression", "Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript"
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools"
+  option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
   option "with-fulldocs", "Install full documentation locally"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
@@ -33,6 +34,11 @@ class Tomcat < Formula
   resource 'mysql-connector' do
     url 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.27.tar.gz/from/http://cdn.mysql.com/'
     sha1 'cb92776b7c72cc506cb5d3305dfc78f3003358bd'
+  end
+
+  resource 'javamail' do
+    url 'https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.1/javax.mail-1.5.1.jar'
+    sha1 '9724dd44f1abbba99c9858aa05fc91d53f59e7a5'
   end
 
   # Keep log folders
@@ -81,6 +87,10 @@ class Tomcat < Formula
 
     if build.with? 'mysql-connector'
       (libexec/'lib').install resource('mysql-connector').files('mysql-connector-java-5.1.27-bin.jar')
+    end
+
+    if build.with? 'javamail'
+      (libexec/'lib').install resource('javamail').files('javax.mail-1.5.1.jar')
     end
 
     (share/'fulldocs').install resource('fulldocs') if build.with? 'fulldocs'
