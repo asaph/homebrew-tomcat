@@ -8,6 +8,7 @@ class Tomcat < Formula
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR, use OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
   option "with-compression", "Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript"
+  option "with-trim-spaces", "Configure tomcat to trim white space in JSP template text between actions or directives"
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools"
   option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
   option "with-fulldocs", "Install full documentation locally"
@@ -83,6 +84,14 @@ class Tomcat < Formula
       # add compression attributes to all HTTP/1.1 connectors
       compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript"'
       inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"HTTP\/1.1\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
+    end
+
+    if build.with? 'trim-spaces'
+      indent = '    ';
+      doubleIndent = "#{indent}#{indent}"
+      tripleIndent = "#{indent}#{indent}#{indent}"
+      trim_spaces_xml = "\n#{doubleIndent}<init-param>\n#{tripleIndent}<param-name>trimSpaces</param-name>\n#{tripleIndent}<param-value>true</param-value>\n#{doubleIndent}</init-param>"
+      inreplace libexec/'conf/web.xml', /(<servlet>\s*<servlet-name>jsp<\/servlet-name>[\s\S]*?)(\s*<load-on-startup>\d+<\/load-on-startup>\s*<\/servlet>)/, "\\1#{trim_spaces_xml}\\2"
     end
 
     if build.with? 'mysql-connector'
