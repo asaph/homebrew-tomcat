@@ -13,6 +13,7 @@ class Tomcat < Formula
   option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
   option "with-fulldocs", "Install full documentation locally"
   option "with-ajp", "Configure AJP connector"
+  option "without-headless", "Don't run tomcat with -Djava.awt.headless=true"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
@@ -60,6 +61,17 @@ class Tomcat < Formula
     tripleIndent = "#{doubleIndent}#{indent}"
     attribute_indent = '               '
 
+    catalina_opts = [];
+
+    if build.with? 'headless'
+      catalina_opts << '-Djava.awt.headless=true'
+    end
+
+    if build.without? 'ajp'
+      # comment out the AJP connector element
+      inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
+    end
+
     if build.with? 'ssl'
       # uncomment ssl connector in server.xml
       inreplace libexec/'conf/server.xml', /<!--\s*(<Connector\s+.[^>]*?\s+secure=\"true\"[^>]*?\/>)\s*-->/, "\\1"
@@ -78,15 +90,9 @@ class Tomcat < Formula
       end
     end
 
-    if build.without? 'ajp'
-      # comment out the AJP connector element
-      inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
-    end
-
     if build.with? 'apr'
       # put tomcat-native into the classpath
-      File.open(libexec/'bin/setenv.sh', 'w') {|file| file.puts "CATALINA_OPTS=\"-Djava.library.path=#{HOMEBREW_PREFIX}/Cellar/tomcat-native/1.1.29/lib\""}
-      File.chmod(0755, libexec/'bin/setenv.sh')
+      catalina_opts << "-Djava.library.path=#{HOMEBREW_PREFIX}/Cellar/tomcat-native/1.1.29/lib"
     end
 
     if build.with? 'compression'
@@ -109,5 +115,11 @@ class Tomcat < Formula
     end
 
     (share/'fulldocs').install resource('fulldocs') if build.with? 'fulldocs'
+
+    if catalina_opts.any?
+      setenv = "CATALINA_OPTS=\"" + catalina_opts.join(' ') + "\""
+      File.open(libexec/'bin/setenv.sh', 'w') {|file| file.puts setenv}
+      File.chmod(0755, libexec/'bin/setenv.sh')
+    end
   end
 end
