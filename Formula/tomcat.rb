@@ -12,6 +12,7 @@ class Tomcat < Formula
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools"
   option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
   option "with-fulldocs", "Install full documentation locally"
+  option "with-ajp", "Configure AJP connector"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
@@ -54,6 +55,9 @@ class Tomcat < Formula
     libexec.install Dir['*']
     bin.install_symlink "#{libexec}/bin/catalina.sh" => "catalina"
 
+    indent = '    '
+    doubleIndent = "#{indent}#{indent}"
+    tripleIndent = "#{doubleIndent}#{indent}"
     attribute_indent = '               '
 
     if build.with? 'ssl'
@@ -74,6 +78,11 @@ class Tomcat < Formula
       end
     end
 
+    if build.without? 'ajp'
+      # comment out the AJP connector element
+      inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
+    end
+
     if build.with? 'apr'
       # put tomcat-native into the classpath
       File.open(libexec/'bin/setenv.sh', 'w') {|file| file.puts "CATALINA_OPTS=\"-Djava.library.path=#{HOMEBREW_PREFIX}/Cellar/tomcat-native/1.1.29/lib\""}
@@ -87,9 +96,6 @@ class Tomcat < Formula
     end
 
     if build.with? 'trim-spaces'
-      indent = '    ';
-      doubleIndent = "#{indent}#{indent}"
-      tripleIndent = "#{indent}#{indent}#{indent}"
       trim_spaces_xml = "\n#{doubleIndent}<init-param>\n#{tripleIndent}<param-name>trimSpaces</param-name>\n#{tripleIndent}<param-value>true</param-value>\n#{doubleIndent}</init-param>"
       inreplace libexec/'conf/web.xml', /(<servlet>\s*<servlet-name>jsp<\/servlet-name>[\s\S]*?)(\s*<load-on-startup>\d+<\/load-on-startup>\s*<\/servlet>)/, "\\1#{trim_spaces_xml}\\2"
     end
