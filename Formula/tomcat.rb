@@ -14,6 +14,7 @@ class Tomcat < Formula
   option "with-fulldocs", "Install full documentation locally"
   option "with-ajp", "Configure AJP connector"
   option "without-headless", "Don't run tomcat with -Djava.awt.headless=true"
+  option "with-standard-ports", "Configure tomcat to listen on port 80 (http) and 443 (https) instead of 8080 (http) and 8443 (https), respectively"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
@@ -93,6 +94,15 @@ class Tomcat < Formula
     if build.with? 'apr'
       # put tomcat-native into the classpath
       catalina_opts << "-Djava.library.path=#{HOMEBREW_PREFIX}/Cellar/tomcat-native/1.1.29/lib"
+    end
+
+    if build.with? 'standard-ports'
+      # replace port and redirectPort attributes
+      inreplace libexec/'conf/server.xml', /(port\s*=\s*")8443(")/i, '\\1443\\2'
+      inreplace libexec/'conf/server.xml', /(port\s*=\s*")8080(")/i, '\\180\\2'
+      # be nice and fix the comments too
+      inreplace libexec/'conf/server.xml', /(port\s*)8080/i, '\\180'
+      inreplace libexec/'conf/server.xml', /(port\s*)8443/i, '\\1443'
     end
 
     if build.with? 'compression'
