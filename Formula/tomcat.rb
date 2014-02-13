@@ -35,8 +35,8 @@ class Tomcat < Formula
   end
 
   resource 'mysql-connector' do
-    url 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.28.tar.gz'
-    sha1 '872257139fbef8eed808e128eb90abc5d6effe5b'
+    url 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.29.tar.gz'
+    sha1 '4cb77180cb95384ca87026c0b36ed2929c8d6b12'
   end
 
   resource 'javamail' do
@@ -107,7 +107,7 @@ class Tomcat < Formula
     end
 
     if build.with? 'mysql-connector'
-      (libexec/'lib').install resource('mysql-connector').files('mysql-connector-java-5.1.28-bin.jar')
+      (libexec/'lib').install resource('mysql-connector').files('mysql-connector-java-5.1.29-bin.jar')
     end
 
     if build.with? 'javamail'
