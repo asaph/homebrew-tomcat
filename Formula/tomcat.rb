@@ -7,7 +7,7 @@ class Tomcat < Formula
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR, use OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
-  option "with-compression", "Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript"
+  option "with-compression", "Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml"
   option "with-trim-spaces", "Configure tomcat to trim white space in JSP template text between actions or directives"
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools"
   option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
