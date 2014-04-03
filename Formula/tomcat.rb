@@ -97,7 +97,7 @@ class Tomcat < Formula
 
     if build.with? 'compression'
       # add compression attributes to all HTTP/1.1 connectors
-      compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript"'
+      compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript,application/xml,image/svg+xml"'
       inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"HTTP\/1.1\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
     end
 
