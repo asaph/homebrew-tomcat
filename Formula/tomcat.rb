@@ -15,6 +15,7 @@ class Tomcat < Formula
   option "with-ajp", "Configure AJP connector"
   option "without-headless", "Don't run tomcat with -Djava.awt.headless=true"
   option "without-sendfile", "Disable sendfile if the connector supports it"
+  option "with-urlencoded-slashes", "Allow urlencoded slash characters (%2F) in the path component of urls"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
@@ -66,6 +67,10 @@ class Tomcat < Formula
 
     if build.with? 'headless'
       catalina_opts << '-Djava.awt.headless=true'
+    end
+
+    if build.with? 'urlencoded-slashes'
+      catalina_opts << '-Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true'
     end
 
     if build.without? 'ajp'
