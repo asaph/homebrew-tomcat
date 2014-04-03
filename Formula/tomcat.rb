@@ -69,7 +69,7 @@ class Tomcat < Formula
 
     if build.without? 'ajp'
       # comment out the AJP connector element
-      inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
+      inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
     end
 
     if build.with? 'ssl'
@@ -80,13 +80,13 @@ class Tomcat < Formula
         # generate a self signed cert
         system "openssl req -new -newkey rsa:4096 -nodes -x509 -subj \"/C=/ST=/L=/O=/CN=localhost\" -keyout #{libexec}/conf/privkey.pem -out #{libexec}/conf/cacert.pem"
         # configure the the connector for an OpenSSL cert
-        inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/,
-                    "\\1\n#{attribute_indent}SSLCertificateFile=\"${catalina.home}/conf/cacert.pem\" SSLCertificateKeyFile=\"${catalina.home}/conf/privkey.pem\"\\2"
+        inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\")[^\"]*(\"[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/,
+                    "\\1HTTP/1.1\\2\n#{attribute_indent}SSLCertificateFile=\"${catalina.home}/conf/cacert.pem\" SSLCertificateKeyFile=\"${catalina.home}/conf/privkey.pem\"\\3"
       else
         # generate a self signed cert
         system "`/usr/libexec/java_home`/bin/keytool -genkey -alias \"tomcat\" -keyalg \"RSA\" -keystore #{libexec}/conf/.keystore -keypass \"tomcat\" -storepass \"tomcat\" -dname \"CN=localhost, OU=, O=, L=, S=, C=\""
         # configure the connector for a .keystore cert
-        inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}keystoreFile=\"${catalina.home}/conf/.keystore\" keystorePass=\"tomcat\"\\2"
+        inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}keystoreFile=\"${catalina.home}/conf/.keystore\" keystorePass=\"tomcat\"\\2"
       end
     end
 
@@ -98,7 +98,7 @@ class Tomcat < Formula
     if build.with? 'compression'
       # add compression attributes to all HTTP/1.1 connectors
       compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript"'
-      inreplace libexec/'conf/server.xml', /(<Connector\s+.[^>]*?\s+protocol=\"HTTP\/1.1\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
+      inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"HTTP\/1.1\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
     end
 
     if build.with? 'trim-spaces'
