@@ -14,6 +14,7 @@ class Tomcat < Formula
   option "with-fulldocs", "Install full documentation locally"
   option "with-ajp", "Configure AJP connector"
   option "without-headless", "Don't run tomcat with -Djava.awt.headless=true"
+  option "without-sendfile", "Disable sendfile if the connector supports it"
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
@@ -104,6 +105,11 @@ class Tomcat < Formula
     if build.with? 'trim-spaces'
       trim_spaces_xml = "\n#{doubleIndent}<init-param>\n#{tripleIndent}<param-name>trimSpaces</param-name>\n#{tripleIndent}<param-value>true</param-value>\n#{doubleIndent}</init-param>"
       inreplace libexec/'conf/web.xml', /(<servlet>\s*<servlet-name>jsp<\/servlet-name>[\s\S]*?)(\s*<load-on-startup>\d+<\/load-on-startup>\s*<\/servlet>)/, "\\1#{trim_spaces_xml}\\2"
+    end
+
+    if build.without? 'sendfile'
+      sendfileSize_xml = "\n#{doubleIndent}<init-param>\n#{tripleIndent}<param-name>sendfileSize</param-name>\n#{tripleIndent}<param-value>-1</param-value>\n#{doubleIndent}</init-param>"
+      inreplace libexec/'conf/web.xml', /(<servlet>\s*<servlet-name>default<\/servlet-name>[\s\S]*?)(\s*<load-on-startup>\d+<\/load-on-startup>\s*<\/servlet>)/, "\\1#{sendfileSize_xml}\\2"
     end
 
     if build.with? 'mysql-connector'
