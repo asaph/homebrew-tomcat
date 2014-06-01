@@ -9,6 +9,7 @@ class Tomcat < Formula
   option "with-apr", "Use Apache Portable Runtime"
   option "with-compression", "Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml"
   option "with-trim-spaces", "Configure tomcat to trim white space in JSP template text between actions or directives"
+  option "with-https-only-manager", "Configure tomcat manager app to only allow connections via https"
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools"
   option "with-javamail", "Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources"
   option "with-fulldocs", "Install full documentation locally"
@@ -110,6 +111,11 @@ class Tomcat < Formula
     if build.with? 'trim-spaces'
       trim_spaces_xml = "\n#{doubleIndent}<init-param>\n#{tripleIndent}<param-name>trimSpaces</param-name>\n#{tripleIndent}<param-value>true</param-value>\n#{doubleIndent}</init-param>"
       inreplace libexec/'conf/web.xml', /(<servlet>\s*<servlet-name>jsp<\/servlet-name>[\s\S]*?)(\s*<load-on-startup>\d+<\/load-on-startup>\s*<\/servlet>)/, "\\1#{trim_spaces_xml}\\2"
+    end
+
+    if build.with? 'https-only-manager'
+      https_only_manager_xml = "\n    <user-data-constraint>\n      <transport-guarantee>CONFIDENTIAL</transport-guarantee>\n    </user-data-constraint>"
+      inreplace libexec/'webapps/manager/WEB-INF/web.xml', /(\s*<\/security-constraint>)/, "#{https_only_manager_xml}\\1"
     end
 
     if build.without? 'sendfile'
