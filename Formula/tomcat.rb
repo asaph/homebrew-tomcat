@@ -43,8 +43,8 @@ class Tomcat < Formula
   end
 
   resource 'javamail' do
-    url 'https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.1/javax.mail-1.5.1.jar'
-    sha1 '9724dd44f1abbba99c9858aa05fc91d53f59e7a5'
+    url 'https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.2/javax.mail-1.5.2.jar'
+    sha1 '0ad1027a3d832bb7f34b4b9afeed760ca8eaa12f'
   end
 
   # Keep log folders
@@ -128,7 +128,7 @@ class Tomcat < Formula
     end
 
     if build.with? 'javamail'
-      (libexec/'lib').install resource('javamail').files('javax.mail-1.5.1.jar')
+      (libexec/'lib').install resource('javamail').files('javax.mail-1.5.2.jar')
     end
 
     (share/'fulldocs').install resource('fulldocs') if build.with? 'fulldocs'
