@@ -49,17 +49,21 @@ which will output:
     --with-apr
     	Use Apache Portable Runtime
     --with-compression
-    	Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml
+    	Configure tomcat to use gzip compression on the following mime types:
+    	text/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml
     --with-fulldocs
     	Install full documentation locally
     --with-https-only-manager
     	Configure tomcat manager app to only allow connections via https
     --with-javamail
-    	Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources
+    	Install the JavaMail jar into tomcat's lib folder.
+    	Useful for containter managed mail resources
     --with-mysql-connector
-    	Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools
+    	Install MySQL JDBC Connector into tomcat's lib folder.
+    	Useful for container managed connection pools
     --with-ssl
-    	Configure SSL and generate a self-signed cert. If building with APR, use OpenSSL to generate the cert, otherwise use java's keytool
+    	Configure SSL and generate a self-signed cert. If building with APR,
+    	use OpenSSL to generate the cert, otherwise use java's keytool
     --with-trim-spaces
     	Configure tomcat to trim white space in JSP template text between actions or directives
     --with-urlencoded-slashes
