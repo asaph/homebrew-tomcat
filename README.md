@@ -42,6 +42,35 @@ That's it! To see all available options:
 
     brew options asaph/tomcat/tomcat
 
+which will output:
+
+    --with-ajp
+    	Configure AJP connector
+    --with-apr
+    	Use Apache Portable Runtime
+    --with-compression
+    	Configure tomcat to use gzip compression on the following mime types: text/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml
+    --with-fulldocs
+    	Install full documentation locally
+    --with-https-only-manager
+    	Configure tomcat manager app to only allow connections via https
+    --with-javamail
+    	Install the JavaMail jar into tomcat's lib folder. Useful for containter managed mail resources
+    --with-mysql-connector
+    	Install MySQL JDBC Connector into tomcat's lib folder. Useful for container managed connection pools
+    --with-ssl
+    	Configure SSL and generate a self-signed cert. If building with APR, use OpenSSL to generate the cert, otherwise use java's keytool
+    --with-trim-spaces
+    	Configure tomcat to trim white space in JSP template text between actions or directives
+    --with-urlencoded-slashes
+    	Allow urlencoded slash characters (%2F) in the path component of urls
+    --without-headless
+    	Don't run tomcat with -Djava.awt.headless=true
+    --without-sendfile
+    	Disable sendfile if the connector supports it
+    --devel
+    	install development version 8.0.8
+
 License:
 -
 
