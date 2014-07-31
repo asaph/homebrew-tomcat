@@ -1,9 +1,9 @@
 require 'formula'
 
 class Tomcat < Formula
-  homepage 'http://tomcat.apache.org/'
-  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.54/bin/apache-tomcat-7.0.54.tar.gz"
-  sha1 "b0db037619c5c10cbe8d17f7a1492fd759fa5805"
+  homepage "http://tomcat.apache.org/"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.9/bin/apache-tomcat-8.0.9.tar.gz"
+  sha1 "7218d06eab70e576de68a4d4d72ec4da34304676"
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
@@ -20,21 +20,10 @@ class Tomcat < Formula
 
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
-  devel do
-    url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.8/bin/apache-tomcat-8.0.8.tar.gz"
-    sha1 "4cca8a0a296f76d45d0b807a03ad956e6bb8a02b"
-
-    resource "fulldocs" do
-      url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.8/bin/apache-tomcat-8.0.8-fulldocs.tar.gz"
-      version "8.0.8"
-      sha1 "a8d98a65e7904047ae8ca5f5dea8a42d0e0491ac"
-    end
-  end
-
   resource 'fulldocs' do
-    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.54/bin/apache-tomcat-7.0.54-fulldocs.tar.gz"
-    version "7.0.54"
-    sha1 "2b2dc6835ebcaf12705cd3e60c40114e498651f0"
+    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.9/bin/apache-tomcat-8.0.9-fulldocs.tar.gz"
+    version "8.0.9"
+    sha1 "24abb690d63a62f6d914739268057a6f3d29d4df"
   end
 
   resource 'mysql-connector' do
