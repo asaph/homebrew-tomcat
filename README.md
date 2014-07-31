@@ -26,9 +26,13 @@ Usage:
 
     `Warning: Could not tap asaph/tomcat/tomcat over Homebrew/homebrew/tomcat`
 
-5. Install tomcat with APR, SSL and gzip compression
+5. Install tomcat 8 with APR, SSL and gzip compression:
 
     `brew install --with-apr --with-ssl --with-compression asaph/tomcat/tomcat`
+
+    or if installing tomcat 7:
+
+    `brew install --with-apr --with-ssl --with-compression asaph/tomcat/tomcat7`
 
 6. Start tomcat
 
@@ -72,8 +76,6 @@ which will output:
     	Don't run tomcat with -Djava.awt.headless=true
     --without-sendfile
     	Disable sendfile if the connector supports it
-    --devel
-    	install development version 8.0.8
 
 License:
 -
