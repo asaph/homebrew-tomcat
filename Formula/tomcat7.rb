@@ -2,8 +2,8 @@ require 'formula'
 
 class Tomcat7 < Formula
   homepage "http://tomcat.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.56/bin/apache-tomcat-7.0.56.tar.gz"
-  sha1 "21c16dfed30b4a15c129e4448e63834103c88272"
+  url "http://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.57/bin/apache-tomcat-7.0.57.tar.gz"
+  sha1 "49ffffe9c2e534e66f81b3173cdbf7e305a75fe2"
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
@@ -21,9 +21,9 @@ class Tomcat7 < Formula
   depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
 
   resource 'fulldocs' do
-    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.56/bin/apache-tomcat-7.0.56-fulldocs.tar.gz"
-    version "7.0.56"
-    sha1 "a32018b4c6870de95935acac41991c2ba0539c79"
+    url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.57/bin/apache-tomcat-7.0.57-fulldocs.tar.gz"
+    version "7.0.57"
+    sha1 "4aba0b393134a230f01ea051c8dbde08fcf08611"
   end
 
   resource 'mysql-connector' do
