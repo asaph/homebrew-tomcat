@@ -18,7 +18,7 @@ class Tomcat < Formula
   option "without-sendfile", "Disable sendfile if the connector supports it"
   option "with-urlencoded-slashes", "Allow urlencoded slash characters (%2F) in the path component of urls"
 
-  depends_on 'tomcat-native' => '--without-tomcat' if build.with? 'apr'
+  depends_on 'tomcat-native' => ['--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
     url "http://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.15/bin/apache-tomcat-8.0.15-fulldocs.tar.gz"
