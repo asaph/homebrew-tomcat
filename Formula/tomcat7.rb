@@ -18,6 +18,7 @@ class Tomcat7 < Formula
   option "without-sendfile", "Disable sendfile if the connector supports it"
   option "with-urlencoded-slashes", "Allow urlencoded slash characters (%2F) in the path component of urls"
 
+  depends_on "openssl" if build.with? "apr"
   depends_on 'tomcat-native' => ['--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
@@ -74,7 +75,7 @@ class Tomcat7 < Formula
 
       if build.with? 'apr'
         # generate a self signed cert
-        system "openssl req -new -newkey rsa:4096 -nodes -x509 -days 365 -subj \"/C=/ST=/L=/O=/CN=localhost\" -keyout #{libexec}/conf/privkey.pem -out #{libexec}/conf/cacert.pem"
+        system "#{Formula['openssl'].bin}/openssl req -new -newkey rsa:4096 -nodes -x509 -days 365 -subj \"/C=/ST=/L=/O=/CN=localhost\" -keyout #{libexec}/conf/privkey.pem -out #{libexec}/conf/cacert.pem"
         # configure the the connector for an OpenSSL cert
         inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\")[^\"]*(\"[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/,
                     "\\1HTTP/1.1\\2\n#{attribute_indent}SSLCertificateFile=\"${catalina.home}/conf/cacert.pem\" SSLCertificateKeyFile=\"${catalina.home}/conf/privkey.pem\"\\3"
