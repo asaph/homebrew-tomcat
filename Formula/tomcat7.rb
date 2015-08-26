@@ -34,7 +34,7 @@ class Tomcat7 < Formula
 
   resource 'javamail' do
     url 'https://maven.java.net/content/repositories/releases/com/sun/mail/javax.mail/1.5.2/javax.mail-1.5.2.jar'
-    sha1 '0ad1027a3d832bb7f34b4b9afeed760ca8eaa12f'
+    sha256 'fb3becba9b18c010b243e32211c26fcda1115e8a47b759d8d0cf288f929029b2'
   end
 
   # Keep log folders
