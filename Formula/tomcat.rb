@@ -6,7 +6,6 @@ class Tomcat < Formula
   mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz"
   sha256 "a7a6c092b79fc5a8cffe5916d0e5554254eddcb3c1911ed90696c153b4f13d10"
 
-
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
   option "with-compression", "Configure tomcat to use gzip compression on the following mime types:\n\ttext/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml"
