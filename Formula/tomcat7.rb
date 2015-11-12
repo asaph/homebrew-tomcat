@@ -2,8 +2,8 @@ require 'formula'
 
 class Tomcat7 < Formula
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64.tar.gz"
-  sha256 "76c729037f9fd6a0f44fa41c147c4c7291e68f74b79ec474c0bcef8a57661306"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.65/bin/apache-tomcat-7.0.65.tar.gz"
+  sha256 "ef0edb1f560702adc4096097ddfba038086d62da77d0b247d927fd326bc637e9"
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
@@ -22,9 +22,9 @@ class Tomcat7 < Formula
   depends_on 'tomcat-native' => ['--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.64/bin/apache-tomcat-7.0.64-fulldocs.tar.gz"
-    version "7.0.64"
-    sha256 "72ee358e6da7fc02772ae4a6d78a24290d4693f30294c76557639c4c5c29b8a5"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.65/bin/apache-tomcat-7.0.65-fulldocs.tar.gz"
+    version "7.0.65"
+    sha256 "a6c3f6d63d4057cf23bf98d2c339ba1e48ceb67ea42a9d8bd097a0a502cdedfa"
   end
 
   resource 'mysql-connector' do
