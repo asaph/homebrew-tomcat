@@ -34,6 +34,10 @@ Usage:
 
     `brew install --with-apr --with-ssl --with-compression asaph/tomcat/tomcat7`
 
+    or if installing tomcat 9 (alpha):
+
+    `brew install --with-apr --with-ssl --with-compression --devel asaph/tomcat/tomcat`
+
 6. Start tomcat
 
     `catalina start`
@@ -76,6 +80,8 @@ which will output:
     	Don't run tomcat with -Djava.awt.headless=true
     --without-sendfile
     	Disable sendfile if the connector supports it
+    --devel
+    	Install development version 9.0.0.M1
 
 License:
 -
