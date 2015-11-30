@@ -1,10 +1,39 @@
 require 'formula'
 
 class Tomcat < Formula
+  desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz"
-  sha256 "a7a6c092b79fc5a8cffe5916d0e5554254eddcb3c1911ed90696c153b4f13d10"
+
+  stable do
+    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29.tar.gz"
+    sha256 "5fdb315918f3c635258f25d412c6c89869162fcd3ee7161291d484e72076e9d0"
+
+    depends_on :java => "1.7+"
+
+    resource "fulldocs" do
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29-fulldocs.tar.gz"
+      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29-fulldocs.tar.gz"
+      version "8.0.29"
+      sha256 "5453eec4bfd94f254f9d06a759794e723e6a77a1f3f4dde73691bad0b8c91409"
+    end
+  end
+
+  devel do
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M1/bin/apache-tomcat-9.0.0.M1.tar.gz"
+    version "9.0.0.M1"
+    sha256 "5e06b82709dba9a1314957f164f270f0edb2e94b7df9ad002ca50fbc881d512f"
+
+    depends_on :java => "1.8+"
+
+    resource "fulldocs" do
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M1/bin/apache-tomcat-9.0.0.M1-fulldocs.tar.gz"
+      version "9.0.0.M1"
+      sha256 "7a23854526968793c423e7afac1329b0268aa85e5ccbaefeb411d7749bcc090e"
+    end
+  end
+
+  bottle :unneeded
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
@@ -21,13 +50,6 @@ class Tomcat < Formula
 
   depends_on "openssl" if build.with? "apr"
   depends_on 'tomcat-native' => ['--without-tomcat', '--with-apr'] if build.with? 'apr'
-
-  resource 'fulldocs' do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28-fulldocs.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28-fulldocs.tar.gz"
-    version "8.0.28"
-    sha256 "be503ea13eac5ca06bd028d1f768c5c935b060ac0a320cd9788408f2f2faa61f"
-  end
 
   resource 'mysql-connector' do
     url 'http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.35.tar.gz'
@@ -72,20 +94,41 @@ class Tomcat < Formula
     end
 
     if build.with? 'ssl'
-      # uncomment ssl connector in server.xml
-      inreplace libexec/'conf/server.xml', /<!--\s*(<Connector\s+.[^>]*?\s+secure=\"true\"[^>]*?\/>)\s*-->/, "\\1"
+      if build.stable?
+        # uncomment SSL connector in server.xml
+        inreplace libexec/'conf/server.xml', /<!--\s*(<Connector\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
+      end
 
       if build.with? 'apr'
         # generate a self signed cert
         system "#{Formula['openssl'].bin}/openssl req -new -newkey rsa:2048 -nodes -days 365 -x509 -subj \"/C=/ST=/L=/O=/CN=localhost\" -keyout #{libexec}/conf/privkey.pem -out #{libexec}/conf/cacert.pem"
         # configure the the connector for an OpenSSL cert
-        inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\")[^\"]*(\"[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/,
+        if build.stable?
+          inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\")[^\"]*(\"[^>]*?\s+SSLEnabled=\"true\"[^>]*?)(\s*\/?>)/,
                     "\\1HTTP/1.1\\2\n#{attribute_indent}SSLCertificateFile=\"${catalina.home}/conf/cacert.pem\" SSLCertificateKeyFile=\"${catalina.home}/conf/privkey.pem\"\\3"
+        else
+          # uncomment APR SSL connector in server.xml
+          inreplace libexec/'conf/server.xml',
+                    /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11AprProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
+          # configure the self signed cert generated above
+          inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeyFile=\")[^\"]*(\"\s+certificateFile=\")[^\"]*(\"[^>]*\/>)/,
+                    "\\1conf/privkey.pem\\2conf/cacert.pem\\3"
+        end
       else
         # generate a self signed cert
         system "`/usr/libexec/java_home`/bin/keytool -genkey -validity 365 -alias \"tomcat\" -keyalg \"RSA\" -keystore #{libexec}/conf/.keystore -keypass \"tomcat\" -storepass \"tomcat\" -dname \"CN=localhost, OU=, O=, L=, S=, C=\""
         # configure the connector for a .keystore cert
-        inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+secure=\"true\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}keystoreFile=\"${catalina.home}/conf/.keystore\" keystorePass=\"tomcat\"\\2"
+        if build.stable?
+          inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+SSLEnabled=\"true\"[^>]*?)(\s*\/?>)/,
+                    "\\1\n#{attribute_indent}keystoreFile=\"${catalina.home}/conf/.keystore\" keystorePass=\"tomcat\"\\2"
+        else
+          # uncomment NIO SSL connector in server.xml
+          inreplace libexec/'conf/server.xml',
+                    /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11NioProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
+          # configure the self signed cert generated above
+          inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeystoreFile=\")[^\"]*(\"[^>]*\/>)/,
+                    "\\1conf/.keystore\" certificateKeystorePassword=\"tomcat\\2"
+        end
       end
     end
 
@@ -97,7 +140,7 @@ class Tomcat < Formula
     if build.with? 'compression'
       # add compression attributes to all HTTP/1.1 connectors
       compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript,application/xml,image/svg+xml"'
-      inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"(?:HTTP\/1\.1|org\.apache\.coyote\.http11\.[A-Za-z0-9]+)\"[^>]*?)(\s*\/>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
+      inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"(?:HTTP\/1\.1|org\.apache\.coyote\.http11\.[A-Za-z0-9]+)\"[^>]*?)(\s*\/?>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
     end
 
     if build.with? 'trim-spaces'
