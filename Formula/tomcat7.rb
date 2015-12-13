@@ -1,9 +1,16 @@
 require 'formula'
 
 class Tomcat7 < Formula
+  desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.65/bin/apache-tomcat-7.0.65.tar.gz"
-  sha256 "ef0edb1f560702adc4096097ddfba038086d62da77d0b247d927fd326bc637e9"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67.tar.gz"
+  sha256 "cd6074f30e2cc98f55213fd396264a760f4a4c8a9b3d4842546578eab8f5220e"
+
+  depends_on :java => "1.7+"
+
+  bottle :unneeded
+
+  conflicts_with "tomcat", :because => "Differing versions of same formula"
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
@@ -22,9 +29,9 @@ class Tomcat7 < Formula
   depends_on 'tomcat-native' => ['--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.65/bin/apache-tomcat-7.0.65-fulldocs.tar.gz"
-    version "7.0.65"
-    sha256 "a6c3f6d63d4057cf23bf98d2c339ba1e48ceb67ea42a9d8bd097a0a502cdedfa"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67-fulldocs.tar.gz"
+    version "7.0.67"
+    sha256 "5d1b2977045d6ec9e29286c213f0b2947c95cb1ca7a4c9e590287a331587feec"
   end
 
   resource 'mysql-connector' do
