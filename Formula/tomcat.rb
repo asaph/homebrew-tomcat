@@ -37,7 +37,7 @@ class Tomcat < Formula
 
   option "with-ssl", "Configure SSL and generate a self-signed cert. If building with APR,\n\tuse OpenSSL to generate the cert, otherwise use java's keytool"
   option "with-apr", "Use Apache Portable Runtime"
-  option "with-compression", "Configure tomcat to use gzip compression on the following mime types:\n\ttext/html, text/xml, text/plain, text/css, application/javascript, application/xml, image/svg+xml"
+  option "with-compression", "Configure tomcat to use gzip compression on the following mime types:\n\ttext/html, text/xml, text/plain, text/css, application/json, application/javascript, application/xml, image/svg+xml"
   option "with-trim-spaces", "Configure tomcat to trim white space in JSP template text between actions or directives"
   option "with-https-only-manager", "Configure tomcat manager app to only allow connections via https"
   option "with-mysql-connector", "Install MySQL JDBC Connector into tomcat's lib folder.\n\tUseful for container managed connection pools"
@@ -139,7 +139,7 @@ class Tomcat < Formula
 
     if build.with? 'compression'
       # add compression attributes to all HTTP/1.1 connectors
-      compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/javascript,application/xml,image/svg+xml"'
+      compression_attributes = 'compression="on" compressableMimeType="text/html,text/xml,text/plain,text/css,application/json,application/javascript,application/xml,image/svg+xml"'
       inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"(?:HTTP\/1\.1|org\.apache\.coyote\.http11\.[A-Za-z0-9]+)\"[^>]*?)(\s*\/?>)/, "\\1\n#{attribute_indent}#{compression_attributes}\\2"
     end
 
