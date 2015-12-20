@@ -58,7 +58,8 @@ which will output:
     	Use Apache Portable Runtime
     --with-compression
     	Configure tomcat to use gzip compression on the following mime types:
-    	text/html, text/xml, text/plain, text/css, application/json, application/javascript, application/xml, image/svg+xml
+    		text/html, text/xml, text/plain, text/css, application/json,
+    		application/javascript, application/xml, image/svg+xml
     --with-fulldocs
     	Install full documentation locally
     --with-https-only-manager
