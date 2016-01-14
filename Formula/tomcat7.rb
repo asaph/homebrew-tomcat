@@ -26,7 +26,7 @@ class Tomcat7 < Formula
   option "with-urlencoded-slashes", "Allow urlencoded slash characters (%2F) in the path component of urls"
 
   depends_on "openssl" if build.with? "apr"
-  depends_on 'tomcat-native' => ['1.2.3+', '--without-tomcat', '--with-apr'] if build.with? 'apr'
+  depends_on 'tomcat-native' => ['1.2.4+', '--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
     url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67-fulldocs.tar.gz"
