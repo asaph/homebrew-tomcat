@@ -3,8 +3,8 @@ require 'formula'
 class Tomcat7 < Formula
   desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67.tar.gz"
-  sha256 "cd6074f30e2cc98f55213fd396264a760f4a4c8a9b3d4842546578eab8f5220e"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-7/v7.0.68/bin/apache-tomcat-7.0.68.tar.gz"
+  sha256 "2c1a02422f265607de733521e54f18613e9dd5efc2861914fe45a858227bb8e0"
 
   depends_on :java => "1.7+"
 
@@ -29,9 +29,9 @@ class Tomcat7 < Formula
   depends_on 'tomcat-native' => ['1.2.4+', '--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'fulldocs' do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.67/bin/apache-tomcat-7.0.67-fulldocs.tar.gz"
-    version "7.0.67"
-    sha256 "5d1b2977045d6ec9e29286c213f0b2947c95cb1ca7a4c9e590287a331587feec"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-7/v7.0.68/bin/apache-tomcat-7.0.68-fulldocs.tar.gz"
+    version "7.0.68"
+    sha256 "c601d81217120ff2b645528ec579e33d1e5dc08cc27a7364aa5fad725b9b5f08"
   end
 
   resource 'mysql-connector' do
