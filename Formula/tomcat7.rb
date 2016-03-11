@@ -96,7 +96,7 @@ class Tomcat7 < Formula
 
     if build.with? 'apr'
       # put tomcat-native into the classpath
-      catalina_opts << "-Djava.library.path=#{Formula["tomcat-native"].lib}"
+      catalina_opts << "-Djava.library.path=$(brew --prefix tomcat-native)/lib"
     end
 
     if build.with? 'compression'
