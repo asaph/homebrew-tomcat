@@ -20,16 +20,16 @@ class Tomcat < Formula
   end
 
   devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M4/bin/apache-tomcat-9.0.0.M4.tar.gz"
-    version "9.0.0.M4"
-    sha256 "7586582b3498d4fb874a82f96f408ee51c8d3bf38eb5af1ea987f65de90ac685"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M8/bin/apache-tomcat-9.0.0.M8.tar.gz"
+    version "9.0.0.M8"
+    sha256 "bcc76aa2806c1af3aa1f8698971428edc086d81797e2ffa53f05baf61944a55c"
 
     depends_on :java => "1.8+"
 
     resource "fulldocs" do
-      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M4/bin/apache-tomcat-9.0.0.M4-fulldocs.tar.gz"
-      version "9.0.0.M4"
-      sha256 "3311cdbf18696090b233bd2bf59740c5583dbf19d3de6b7c97e2f348c625b2b5"
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M8/bin/apache-tomcat-9.0.0.M8-fulldocs.tar.gz"
+      version "9.0.0.M8"
+      sha256 "a6a2f9e6e407be668cf329c9dd599cafbafc0e5b4d3bf748fe963b8090f1e4d3"
     end
   end
 
