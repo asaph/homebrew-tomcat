@@ -93,6 +93,10 @@ class Tomcat < Formula
       inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\"AJP\/\d+(?:.\d+)?\"[^>]*?\/>)/, "<!--\n#{indent}\\1\n#{indent}-->"
     end
 
+    if build.with? 'apr'
+      inreplace libexec/'conf/server.xml', /<Connector port="8080" protocol="HTTP\/1\.1"/, "<Connector port=\"8080\" protocol=\"org.apache.coyote.http11.Http11AprProtocol\""
+    end
+
     if build.with? 'ssl'
       if build.with? 'apr'
         # generate a self signed cert
