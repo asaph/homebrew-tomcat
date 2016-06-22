@@ -49,7 +49,7 @@ class Tomcat < Formula
   option "with-urlencoded-slashes", "Allow urlencoded slash characters (%2F) in the path component of urls"
 
   depends_on "openssl" if build.with? "apr"
-  depends_on 'tomcat-native' => ['1.2.4+', '--without-tomcat', '--with-apr'] if build.with? 'apr'
+  depends_on 'tomcat-native' => ['1.2.7+', '--without-tomcat', '--with-apr'] if build.with? 'apr'
 
   resource 'mysql-connector' do
     url 'https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.tar.gz'
