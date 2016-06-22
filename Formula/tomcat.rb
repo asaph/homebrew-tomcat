@@ -5,17 +5,17 @@ class Tomcat < Formula
   homepage "https://tomcat.apache.org/"
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33.tar.gz"
-    sha256 "c77873c1861ed81617abb8bedc392fb0ff5ebf871de33cd1fcd49d4c072e38b7"
+    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.5.3/bin/apache-tomcat-8.5.3.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.3/bin/apache-tomcat-8.5.3.tar.gz"
+    sha256 "d70eb2ef9d3c265cd6892bd21b7e56f36162e68fdf4323274cf24045f6d865fc"
 
     depends_on :java => "1.7+"
 
     resource "fulldocs" do
-      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33-fulldocs.tar.gz"
-      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.33/bin/apache-tomcat-8.0.33-fulldocs.tar.gz"
-      version "8.0.33"
-      sha256 "211dd1d95fbb838914169828de64cf8a12ffc0ae6d3c77b8027592849c89ebb4"
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.5.3/bin/apache-tomcat-8.5.3-fulldocs.tar.gz"
+      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.3/bin/apache-tomcat-8.5.3-fulldocs.tar.gz"
+      version "8.5.3"
+      sha256 "7714a7324bf6490f56a2f8ec3b6e33449e9e4bbf8390cbddad1b0db196992de9"
     end
   end
 
@@ -94,41 +94,26 @@ class Tomcat < Formula
     end
 
     if build.with? 'ssl'
-      if build.stable?
-        # uncomment SSL connector in server.xml
-        inreplace libexec/'conf/server.xml', /<!--\s*(<Connector\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
-      end
-
       if build.with? 'apr'
         # generate a self signed cert
         system "#{Formula['openssl'].bin}/openssl req -new -newkey rsa:2048 -nodes -days 365 -x509 -subj \"/C=/ST=/L=/O=/CN=localhost\" -keyout #{libexec}/conf/privkey.pem -out #{libexec}/conf/cacert.pem"
         # configure the the connector for an OpenSSL cert
-        if build.stable?
-          inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+protocol=\")[^\"]*(\"[^>]*?\s+SSLEnabled=\"true\"[^>]*?)(\s*\/?>)/,
-                    "\\1HTTP/1.1\\2\n#{attribute_indent}SSLCertificateFile=\"${catalina.home}/conf/cacert.pem\" SSLCertificateKeyFile=\"${catalina.home}/conf/privkey.pem\"\\3"
-        else
-          # uncomment APR SSL connector in server.xml
-          inreplace libexec/'conf/server.xml',
-                    /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11AprProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
-          # configure the self signed cert generated above
-          inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeyFile=\")[^\"]*(\"\s+certificateFile=\")[^\"]*(\"[^>]*\/>)/,
-                    "\\1conf/privkey.pem\\2conf/cacert.pem\\3"
-        end
+        # uncomment APR SSL connector in server.xml
+        inreplace libexec/'conf/server.xml',
+                  /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11AprProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
+        # configure the self signed cert generated above
+        inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeyFile=\")[^\"]*(\"\s+certificateFile=\")[^\"]*(\"[^>]*\/>)/,
+                  "\\1conf/privkey.pem\\2conf/cacert.pem\\3"
       else
         # generate a self signed cert
         system "`/usr/libexec/java_home`/bin/keytool -genkey -validity 365 -alias \"tomcat\" -keyalg \"RSA\" -keystore #{libexec}/conf/.keystore -keypass \"tomcat\" -storepass \"tomcat\" -dname \"CN=localhost, OU=, O=, L=, S=, C=\""
         # configure the connector for a .keystore cert
-        if build.stable?
-          inreplace libexec/'conf/server.xml', /(<Connector\s+[^>]*?\s+SSLEnabled=\"true\"[^>]*?)(\s*\/?>)/,
-                    "\\1\n#{attribute_indent}keystoreFile=\"${catalina.home}/conf/.keystore\" keystorePass=\"tomcat\"\\2"
-        else
-          # uncomment NIO SSL connector in server.xml
-          inreplace libexec/'conf/server.xml',
-                    /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11NioProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
-          # configure the self signed cert generated above
-          inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeystoreFile=\")[^\"]*(\"[^>]*\/>)/,
-                    "\\1conf/.keystore\" certificateKeystorePassword=\"tomcat\\2"
-        end
+        # uncomment NIO SSL connector in server.xml
+        inreplace libexec/'conf/server.xml',
+                  /<!--\s*(<Connector\s+.[^>]*?\s+protocol=\"org.apache.coyote.http11.Http11NioProtocol\"\s+.[^>]*?\s+SSLEnabled=\"true\"[^>]*?(\/>|.*?<\/Connector>))\s*-->/m, "\\1"
+        # configure the self signed cert generated above
+        inreplace libexec/'conf/server.xml', /(<Certificate\s+certificateKeystoreFile=\")[^\"]*(\"[^>]*\/>)/,
+                  "\\1conf/.keystore\" certificateKeystorePassword=\"tomcat\\2"
       end
     end
 
