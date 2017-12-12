@@ -22,14 +22,14 @@ class Tomcat < Formula
   devel do
     url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.2.tar.gz"
     version "9.0.2"
-    sha512 "6f365c7ef0359de8ca5d2e79608ac9d88549dac09189559c1c8a65bccecf0fed396c3d16827dd0698cc5d9c3f5aaf42e29b788968de60e63c288a8d2b6dc85b2"
+    sha256 "689844c8f373bd7db6a0c5ce7414b825d500bf64300273656dba8b05e29f5e29"
 
     depends_on :java => "1.8+"
 
     resource "fulldocs" do
       url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.2/bin/apache-tomcat-9.0.2-fulldocs.tar.gz"
       version "9.0.2"
-      sha512 "8ea3fd0f2fe352bde755c5ffbcb2de5cb021746af38041af1f980ea1d55e2c4e6f10664fce492066ea47a834398421b2d0f48be91996169087cd90044ce9a3ba"
+      sha256 "50062ec50751b5684513fb2d926731d4da77d98c947174780bb531949b1be48a"
     end
   end
 
