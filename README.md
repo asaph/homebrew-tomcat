@@ -82,7 +82,7 @@ which will output:
     --without-sendfile
     	Disable sendfile if the connector supports it
     --devel
-    	Install development version 9.0.0.M9
+    	Install development version 9.0.2
 
 License:
 -
